@@ -15,10 +15,6 @@ class Tokenizer(object):
         for exception in self.exceptions.get(exception):
             self.add_exception(exception)
 
-    def tokenize_groups(self, match):
-        self.tokenize_pipline(match.group(1))
-        self.tokenize_pipline(match.group(2))
-
     def tokenize_pipline(self, token):
         if token in self.exceptions:
             self.add_exception(token)
@@ -26,7 +22,9 @@ class Tokenizer(object):
             for rule in list(self.rules):
                 match = re.match(self.rules.get(rule), token)
                 if match:
-                    self.tokenize_groups(match)
+                    for group in match.groups():
+                        if group != '':
+                            self.tokenize_pipline(group)
                     break
                 else:
                     if rule == list(self.rules)[-1]:

@@ -15,7 +15,7 @@ def test_all_punctuation_regex():
     assert tokenizer_rules['ALL_PUNCTUATION_TOKEN'].pattern == """^([',!?":.])([',!?":.]+)$"""
 
 def test_currency_amount_regex():
-    assert tokenizer_rules['CURRENCY_AMOUNT_TOKEN'].pattern == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})$"""
+    assert tokenizer_rules['CURRENCY_AMOUNT_TOKEN'].pattern == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
 
 
 # Test rules.
@@ -60,7 +60,7 @@ def test_currency_amount_rule():
         '¥32' : ['¥', '32'],
         '¥35.00' : ['¥', '35.00'],
         '€23.00' : ['€', '23.00'],
-        '€1.23,' : ['€1.23,'],
+        '€1.23,' : ['€', '1.23', ','],
     }
 
     for test, answer in inital_punctuation_testdata.items():
