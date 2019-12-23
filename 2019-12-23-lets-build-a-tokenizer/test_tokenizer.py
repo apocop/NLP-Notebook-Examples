@@ -32,7 +32,7 @@ def test_inital_punctuation_rule():
         assert tokenizer.tokenize(test) == answer
 
 def test_final_punctuation_rule():
-    inital_punctuation_testdata = {
+    final_punctuation_testdata = {
         'Say,' : ["Say", ','],
         'Hi...' : ['Hi', '.', '.', '.'],
         'Like this:' : ['Like', 'this', ':'],
@@ -40,22 +40,22 @@ def test_final_punctuation_rule():
         'etc.' : ['etc', '.'],
     }
 
-    for test, answer in inital_punctuation_testdata.items():
+    for test, answer in final_punctuation_testdata.items():
         assert tokenizer.tokenize(test) == answer
 
 
 def test_all_punctuation_rule():
-    inital_punctuation_testdata = {
+    all_punctuation_testdata = {
         '",' : ["\"", ','],
         '\',' : ["\'", ','],
     }
 
-    for test, answer in inital_punctuation_testdata.items():
+    for test, answer in all_punctuation_testdata.items():
         assert tokenizer.tokenize(test) == answer
 
 
 def test_currency_amount_rule():
-    inital_punctuation_testdata = {
+    currency_amount_testdata = {
         '$5.00' : ['$', '5.00'],
         '¥32' : ['¥', '32'],
         '¥35.00' : ['¥', '35.00'],
@@ -63,5 +63,16 @@ def test_currency_amount_rule():
         '€1.23,' : ['€', '1.23', ','],
     }
 
-    for test, answer in inital_punctuation_testdata.items():
+    for test, answer in currency_amount_testdata.items():
+        assert tokenizer.tokenize(test) == answer
+
+def test_exceptions():
+    exceptions_testdata = {
+        "don't" : ["do", "n't"],
+        "isn't" : ["is", "n't"],
+        "What's" : ["What", "'s"],
+        "what's" : ["what's"],
+        "I'm" : ["I", "'m"],
+    }
+    for test, answer in exceptions_testdata.items():
         assert tokenizer.tokenize(test) == answer

@@ -12,8 +12,8 @@ class Tokenizer(object):
         self.tokens.append(approved_token)
 
     def add_exception(self, exception):
-        for exception in self.exceptions.get(exception):
-            self.add_exception(exception)
+        for token in self.exceptions.get(exception):
+            self.tokens.append(token)
 
     def tokenize_pipline(self, token):
         if token in self.exceptions:
