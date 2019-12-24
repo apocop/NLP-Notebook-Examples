@@ -6,16 +6,16 @@ tokenizer = Tokenizer()
 
 # Test rule regexes.
 def test_inital_punctuation_regex():
-    tokenizer_rules['INITIAL_PUNCTUATION_TOKEN'].pattern == """^([\'"])([A-Z]+[\',!?":.]*)$"""
+    tokenizer_rules['initial_punctuation_token'].pattern == """^([\'"])([A-Z]+[\',!?":.]*)$"""
 
 def test_final_punctuation_regex():
-    assert tokenizer_rules['FINAL_PUNCTUATION_TOKEN'].pattern == """^([A-Z]+)([',!?":.]+)$"""
+    assert tokenizer_rules['final_punctuation_token'].pattern == """^([A-Z]+)([',!?":.]+)$"""
 
 def test_all_punctuation_regex():
-    assert tokenizer_rules['ALL_PUNCTUATION_TOKEN'].pattern == """^([',!?":.])([',!?":.]+)$"""
+    assert tokenizer_rules['all_punctuation_token'].pattern == """^([',!?":.])([',!?":.]+)$"""
 
 def test_currency_amount_regex():
-    assert tokenizer_rules['CURRENCY_AMOUNT_TOKEN'].pattern == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
+    assert tokenizer_rules['currency_amount_token'].pattern == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
 
 
 # Test rules.

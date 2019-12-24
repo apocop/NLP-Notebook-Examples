@@ -1,48 +1,48 @@
 import re
 
 def compile_rule(rule):
-    return re.compile(BOS + rule + EOS, re.IGNORECASE)
+    return re.compile(bos + rule + eos, re.IGNORECASE)
 
 def group(group):
-    # Creates regex groups.
-    return OPEN_GROUP + group + CLOSE_GROUP
+    # creates regex groups.
+    return open_group + group + close_group
 
-# Basic characters and sets.
-ALPHA = '[A-Z]+'
-DIGITS = '[0-9]'
-BOS = '^'
-EOS = '$'
-PLUS = '+'
-STAR = "*"
-PERIOD = r'\.'
-OPEN_GROUP = '('
-CLOSE_GROUP = ')'
-INITIAL_PUNCTUATION = '[\'"]'
-FINAL_PUNCTUATION = '[\',!?":.]'
-CURRENCY_SYMBOL = '[$£¥€]'
-ZERO_OR_ONE = '?'
+# basic characters and sets.
+alpha = '[A-Z]+'
+digits = '[0-9]'
+bos = '^'
+eos = '$'
+plus = '+'
+star = "*"
+period = r'\.'
+open_group = '('
+close_group = ')'
+initial_punctuation = '[\'"]'
+final_punctuation = '[\',!?":.]'
+currency_symbol = '[$£¥€]'
+zero_or_one = '?'
 
-# Character Regex Groups.
-ALPHA_GROUP = group(ALPHA)
-INITIAL_PUNCTUATION_GROUP = group(INITIAL_PUNCTUATION)
-FINAL_PUNCTUATION_GROUP = group(FINAL_PUNCTUATION + PLUS)
-FINAL_PUNCTUATION_STAR_GROUP = group(FINAL_PUNCTUATION + STAR)
-CURRENCY_SYMBOL_GROUP = group(CURRENCY_SYMBOL)
-CURRENCY_GROUP = group(DIGITS + PLUS + PERIOD + ZERO_OR_ONE + DIGITS + '{,2}')
-ALPHA_PUNCTUATION_GROUP = group(ALPHA + FINAL_PUNCTUATION + STAR)
+# character regex groups.
+alpha_group = group(alpha)
+initial_punctuation_group = group(initial_punctuation)
+final_punctuation_group = group(final_punctuation + plus)
+final_punctuation_star_group = group(final_punctuation + star)
+currency_symbol_group = group(currency_symbol)
+currency_group = group(digits + plus + period + zero_or_one + digits + '{,2}')
+alpha_punctuation_group = group(alpha + final_punctuation + star)
 
-# Grammar rules.
-INITIAL_PUNCTUATION_TOKEN = INITIAL_PUNCTUATION_GROUP + ALPHA_PUNCTUATION_GROUP
-FINAL_PUNCTUATION_TOKEN = ALPHA_GROUP + FINAL_PUNCTUATION_GROUP
-ALL_PUNCTUATION_TOKEN = OPEN_GROUP + FINAL_PUNCTUATION + CLOSE_GROUP + FINAL_PUNCTUATION_GROUP
-CURRENCY_AMOUNT_TOKEN = CURRENCY_SYMBOL_GROUP + CURRENCY_GROUP + FINAL_PUNCTUATION_STAR_GROUP
+# grammar rules.
+initial_punctuation_token = initial_punctuation_group + alpha_punctuation_group
+final_punctuation_token = alpha_group + final_punctuation_group
+all_punctuation_token = open_group + final_punctuation + close_group + final_punctuation_group
+currency_amount_token = currency_symbol_group + currency_group + final_punctuation_star_group
 
 rules_to_export = {
-    'INITIAL_PUNCTUATION_TOKEN' : INITIAL_PUNCTUATION_TOKEN,
-    'FINAL_PUNCTUATION_TOKEN' : FINAL_PUNCTUATION_TOKEN,
-    'ALL_PUNCTUATION_TOKEN' : ALL_PUNCTUATION_TOKEN,
-    'CURRENCY_AMOUNT_TOKEN' : CURRENCY_AMOUNT_TOKEN,
+    'initial_punctuation_token' : initial_punctuation_token,
+    'final_punctuation_token' : final_punctuation_token,
+    'all_punctuation_token' : all_punctuation_token,
+    'currency_amount_token' : currency_amount_token,
 }
 
-# Compiled rules with word boundaries.
+# compiled rules with word boundaries.
 rules = {k:compile_rule(v) for (k,v) in rules_to_export.items()}
