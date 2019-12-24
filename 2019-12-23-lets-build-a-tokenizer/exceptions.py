@@ -1,4 +1,4 @@
-exceptions = {
+lexicon = {
     "don't" : ["do", "n't"],
      "isn't" : ["is", "n't"],
      "What's" : ["What", "'s"],

@@ -1,4 +1,4 @@
-from tokenizer import Tokenizer
+import tokenizer
 
 lines = [
     "Hi, how are you?",
@@ -9,7 +9,7 @@ lines = [
     "I have $43, while you have €3.32.",
 ]
 
-tokenizer = Tokenizer()
+tokenizer = tokenizer.Tokenizer()
 
 tokenized_lines = [tokenizer.tokenize(line) for line in lines]
 for line in tokenized_lines:

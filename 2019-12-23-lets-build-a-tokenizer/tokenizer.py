@@ -1,40 +1,36 @@
 import re
-from exceptions import exceptions
-from grammar import rules
+import exceptions
+import grammar
 
-class Tokenizer(object):
-    def __init__(self, rules = rules, exceptions = exceptions):
-        self.tokens = []
+class Tokenizer():
+    def __init__(self, rules=grammar.rules, exceptions=exceptions.lexicon):
         self.rules = rules
-        self.exceptions = exceptions
-
-    def add_token(self, approved_token):
-        self.tokens.append(approved_token)
+        self.lexicon = exceptions
+        self.accepted_tokens = None
 
     def add_exception(self, exception):
-        for token in self.exceptions.get(exception):
-            self.tokens.append(token)
+        for token in self.lexicon.get(exception):
+            self.accepted_tokens.append(token)
 
-    def tokenize_pipline(self, token):
-        if token in self.exceptions:
+    def tokenize_pipeline(self, token):
+        if token in self.lexicon:
             self.add_exception(token)
         else:
             for rule in list(self.rules):
                 match = re.match(self.rules.get(rule), token)
                 if match:
                     for group in match.groups():
-                        if group != '':
-                            self.tokenize_pipline(group)
+                        if group:
+                            self.tokenize_pipeline(group)
                     break
                 else:
                     if rule == list(self.rules)[-1]:
-                        self.add_token(token)
+                        self.accepted_tokens.append(token)
 
     def tokenize(self, string):
-        for token in string.split():
-            self.tokenize_pipline(token)
+        self.accepted_tokens = []
+        tokens = (token for token in string.split())
+        for token in tokens:
+            self.tokenize_pipeline(token)
 
-        accepted_tokens = self.tokens.copy()
-        self.tokens.clear()
-
-        return accepted_tokens
+        return self.accepted_tokens
