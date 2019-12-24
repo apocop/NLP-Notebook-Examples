@@ -1,26 +1,38 @@
-from grammar import rules
-from tokenizer import Tokenizer
+"""
+Test the tokenizer, grammar and exceptions.
+"""
+import tokenizer
+import grammar
 
-tokenizer_rules = rules
-tokenizer = Tokenizer()
+
+TOKENIZER = tokenizer.Tokenizer()
+RULES = grammar.RULES
 
 # Test rule regexes.
 def test_inital_punctuation_regex():
-    tokenizer_rules['initial_punctuation_token'].pattern == """^([\'"])([A-Z]+[\',!?":.]*)$"""
+    """Test the grammar generated regex."""
+    test_regex = RULES['initial_punctuation_token'].pattern
+    assert test_regex == """^([\'"])([A-Z]+[\',!?":.]*)$"""
 
 def test_final_punctuation_regex():
-    assert tokenizer_rules['final_punctuation_token'].pattern == """^([A-Z]+)([',!?":.]+)$"""
+    """Test the grammar generated regex."""
+    test_regex = RULES['final_punctuation_token'].pattern
+    assert test_regex == """^([A-Z]+)([',!?":.]+)$"""
 
 def test_all_punctuation_regex():
-    assert tokenizer_rules['all_punctuation_token'].pattern == """^([',!?":.])([',!?":.]+)$"""
+    """Test the grammar generated regex."""
+    test_regex = RULES['all_punctuation_token'].pattern
+    assert test_regex == """^([',!?":.])([',!?":.]+)$"""
 
 def test_currency_amount_regex():
-    assert tokenizer_rules['currency_amount_token'].pattern == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
+    """Test the grammar generated regex."""
+    test_regex = RULES['currency_amount_token'].pattern
+    assert test_regex == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
 
 
 # Test rules.
-
 def test_inital_punctuation_rule():
+    """Test the tokenizer pipeline is tokenizing initial punctuation."""
     inital_punctuation_testdata = {
         '"Hi' : ['"', 'Hi'],
         '\'Hi' : ['\'', 'Hi'],
@@ -29,9 +41,10 @@ def test_inital_punctuation_rule():
     }
 
     for test, answer in inital_punctuation_testdata.items():
-        assert tokenizer.tokenize(test) == answer
+        assert TOKENIZER.tokenize(test) == answer
 
 def test_final_punctuation_rule():
+    """Test the tokenizer pipeline is tokenizing final punctuation."""
     final_punctuation_testdata = {
         'Say,' : ["Say", ','],
         'Hi...' : ['Hi', '.', '.', '.'],
@@ -41,20 +54,22 @@ def test_final_punctuation_rule():
     }
 
     for test, answer in final_punctuation_testdata.items():
-        assert tokenizer.tokenize(test) == answer
+        assert TOKENIZER.tokenize(test) == answer
 
 
 def test_all_punctuation_rule():
+    """Test the tokenizer pipeline is tokenizing all punctuation."""
     all_punctuation_testdata = {
         '",' : ["\"", ','],
         '\',' : ["\'", ','],
     }
 
     for test, answer in all_punctuation_testdata.items():
-        assert tokenizer.tokenize(test) == answer
+        assert TOKENIZER.tokenize(test) == answer
 
 
 def test_currency_amount_rule():
+    """Test the tokenizer pipeline is tokenizing currency amount."""
     currency_amount_testdata = {
         '$5.00' : ['$', '5.00'],
         '¥32' : ['¥', '32'],
@@ -64,9 +79,10 @@ def test_currency_amount_rule():
     }
 
     for test, answer in currency_amount_testdata.items():
-        assert tokenizer.tokenize(test) == answer
+        assert TOKENIZER.tokenize(test) == answer
 
 def test_exceptions():
+    """Test the tokenizer pipeline using exceptions."""
     exceptions_testdata = {
         "don't" : ["do", "n't"],
         "isn't" : ["is", "n't"],
@@ -75,4 +91,4 @@ def test_exceptions():
         "I'm" : ["I", "'m"],
     }
     for test, answer in exceptions_testdata.items():
-        assert tokenizer.tokenize(test) == answer
+        assert TOKENIZER.tokenize(test) == answer
