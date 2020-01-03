@@ -21,12 +21,12 @@ def test_final_punctuation_regex():
 
 def test_all_punctuation_regex():
     """Test the grammar generated regex."""
-    test_regex = RULES['all_punctuation_token'].pattern
+    test_regex = RULES['punctuation_token'].pattern
     assert test_regex == """^([',!?":.])([',!?":.]+)$"""
 
-def test_currency_amount_regex():
+def test_currency_regex():
     """Test the grammar generated regex."""
-    test_regex = RULES['currency_amount_token'].pattern
+    test_regex = RULES['currency_token'].pattern
     assert test_regex == r"""^([$£¥€])([0-9]+\.?[0-9]{,2})([',!?":.]*)$"""
 
 
