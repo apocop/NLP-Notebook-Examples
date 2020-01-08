@@ -13,15 +13,11 @@ class Tokenizer:
         self.exception_lexicon = exceptions.LEXICON
         self.accepted_tokens = None
 
-    def __add_exception(self, exception):
-        """Add approved tokens from an acception list."""
-        for token in self.exception_lexicon.get(exception):
-            self.accepted_tokens.append(token)
-
     def __tokenize_pipeline(self, token):
         """Return an approved token."""
         if token in self.exception_lexicon:
-            self.__add_exception(token)
+            for exception in self.exception_lexicon.get(token):
+                self.accepted_tokens.append(exception)
         else:
             continue_matching = True
             rule_index = 0
