@@ -14,10 +14,9 @@ class Tokenizer:
         self.accepted_tokens = None
 
     def __tokenize_pipeline(self, token):
-        """Return an approved token."""
+        """Validate tokens."""
         if token in self.exception_lexicon:
-            for exception in self.exception_lexicon.get(token):
-                self.accepted_tokens.append(exception)
+            self.accepted_tokens += self.exception_lexicon[token]
         else:
             continue_matching = True
             rule_index = 0
